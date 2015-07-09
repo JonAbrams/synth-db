@@ -1,0 +1,23 @@
+{
+  "name": "synth-db",
+  "version": "1.0.0",
+  "description": "An ORM with support for the latest JavaScript features",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JonAbrams/synth-db.git"
+  },
+  "keywords": [
+    "synth",
+    "orm"
+  ],
+  "author": "Jon Abrams",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JonAbrams/synth-db/issues"
+  },
+  "homepage": "https://github.com/JonAbrams/synth-db#readme"
+}
