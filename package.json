@@ -19,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/JonAbrams/synth-db/issues"
   },
-  "homepage": "https://github.com/JonAbrams/synth-db#readme"
+  "homepage": "https://github.com/JonAbrams/synth-db#readme",
+  "dependencies": {
+    "co": "^4.5.4",
+    "knex": "^0.8.6",
+    "mz": "^2.0.0"
+  }
 }
