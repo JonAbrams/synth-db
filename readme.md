@@ -6,6 +6,8 @@ Requires Node 0.12 or IO.js so it can make use of ES6/ES2015 features of JavaScr
 
 Being developed readme first (tests second). There's still lots of missing implementation.
 
+[![Build Status](https://travis-ci.org/JonAbrams/synth-db.svg?branch=master)](https://travis-ci.org/JonAbrams/synth-db)
+
 ## Install
 
 ```
