@@ -21,12 +21,11 @@
   },
   "homepage": "https://github.com/JonAbrams/synth-db#readme",
   "dependencies": {
-    "co": "^4.5.4",
     "inflection": "^1.7.1",
     "knex": "^0.8.6",
-    "mz": "^2.0.0"
   },
   "devDependencies": {
+    "mocha": "^2.2.5",
     "pg": "^4.4.0"
   }
 }
