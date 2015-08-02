@@ -28,7 +28,7 @@ describe('Base', function () {
     it('populates attributes', function () {
       assert.equal(User.attributes, null);
       return User.resetColumnInformation().then(function () {
-        assert.deepEqual(Object.keys(User.attributes), ['id', 'name', 'created_at', 'updated_at']);
+        assert.deepEqual(Object.keys(User.attributes).sort, ['id', 'name', 'created_at', 'updated_at'].sort);
       });
     });
   });
