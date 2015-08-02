@@ -4,7 +4,7 @@
   "description": "An ORM with support for the latest JavaScript features",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha tests/base.js --harmony_arrow_functions"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,6 @@
     "mz": "^2.0.0"
   },
   "devDependencies": {
-    "sqlite3": "^3.0.9"
+    "pg": "^4.4.0"
   }
 }
