@@ -1,53 +1,61 @@
 # synth-db
 
-An ORM for Node and SQL databases. Heavily inspired by [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html)
+An ORM for Node and SQL databases. Heavily inspired by [ActiveRecord](http://guides.rubyonrails.org/active_record_basics.html) with a goal of being compatible with the same db that a Rails app would use.
 
-Requires Node 0.12 or IO.js so it can make use of ES6/ES2015 features of JavaScript.
+Requires Node 0.12 or IO.js so it can make use of ES6/ES2015 features of JavaScript. Requires classes and arrow functions.
 
-Being developed readme first (tests second). There's no implementation yet.
+Being developed readme first (tests second). There's still lots of missing implementation.
 
 ## Install
 
 ```
 npm install --save synth-db
+npm install --save knex      # needed too
 ```
 
 ## API
 
 ### init
 
-Initialize synth-db so it can connect to your db.
+Create a connection to your db using [knex](https://github.com/tgriesser/knex), then pass it to synth-db.
 
 ```
-var sdb = require('synth-db').init('postgres://localhost');
+let knex = require('knex')('postgres://localhost/mydb');
+let sdb = require('synth-db');
+sdb.setKnex(knex);
 ```
 
-The init function, if successful, returns a connection to the db. This object is
-the one to be used in the rest of the readme.
-
-The connection is made using [knex](https://github.com/tgriesser/knex). You can access the knex connection directly with `sdb.knex`.
+synth-db is a base class that you models will extend.
 
 ### Declaring Models
 
-Create a model and have it extend
+Create a model and have it extend the `Base` class.
 
 ```javascript
-var sdb = require('synth-db').init('postgres://localhost');
+// Assuming you called setKnex previously in the app
+var sdb = require('synth-db');
 
 class User extends sdb.Base {
   constructor () {
     super();
   }
 }
+
+/* init will populate the attributes with fields from the `users` table */
+User.init().then(function () {
+  return User.first;
+}).then(function (user) {
+  console.log(user.name);
+})
 ```
 
 The above will look to the database for a `users` table, and add setters and getters for each column detected.
 
 What can you do with a model? You can use it to find records from the table is represents.
 
-### Querying
+### Querying (not yet implemented)
 
-#### .find(id:string|number):SdbRecord
+#### .find(id:string|number):Record
 
 .find takes in the primary key used to look up a record. The `id` field will be used for lookups. A promise to the record is returned, if no record is found, the promise will be rejected.
 
@@ -60,7 +68,7 @@ User.find(userId).then(function (currentUser) {
 });
 ```
 
-#### .where([equalities:object]|[searchString:string][, ...vars]):SdbRelation
+#### .where([equalities:object]|[searchString:string][, ...vars]):Relation
 
 .where can either take an equalities object or a search string. The equality object is a set of keys and values that need to all be true for a record to be included.
 
