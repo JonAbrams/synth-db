@@ -4,7 +4,7 @@
   "description": "An ORM with support for the latest JavaScript features",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/base.js --harmony_arrow_functions"
+    "test": "mocha tests/ --harmony_arrow_functions"
   },
   "repository": {
     "type": "git",

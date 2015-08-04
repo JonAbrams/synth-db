@@ -5,7 +5,7 @@ let Base = require('../lib/base');
 let testdb = require('./testdb');
 let knex = testdb.knex;
 
-Base.setKnex(knex);
+Base.knex = knex;
 
 beforeEach(function () {
   return testdb.refresh();
