@@ -24,7 +24,7 @@ Create a connection to your db using [knex](https://github.com/tgriesser/knex), 
 ```
 let knex = require('knex')('postgres://localhost/mydb');
 let sdb = require('synth-db');
-sdb.setKnex(knex);
+sdb.knex = knex;
 ```
 
 synth-db is a base class that you models will extend.
