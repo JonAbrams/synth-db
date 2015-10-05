@@ -27,11 +27,11 @@ describe('Relation', function () {
         });
       });
 
-      describe('two records', function () {
-        beforeEach(makeTwoRecords);
+      describe('many records', function () {
+        beforeEach(makeRecords);
 
         it('returns the first record', function () {
-          return assert.eventually.propertyVal(User.first, 'name', 'Jon');
+          return assert.eventually.propertyVal(User.first, 'name', 'John');
         });
       });
     });
@@ -43,19 +43,35 @@ describe('Relation', function () {
         });
       });
 
-      describe('two records', function () {
-        beforeEach(makeTwoRecords);
+      describe('many records', function () {
+        beforeEach(makeRecords);
 
         it('returns the last record', function () {
-          return assert.eventually.propertyVal(User.last, 'name', 'Zivi');
+          return assert.eventually.propertyVal(User.last, 'name', 'Ringo');
         });
       });
     });
   });
+
+  describe('#order', function () {
+    beforeEach(makeRecords);
+
+    it('orders by id', function () {
+      return assert.eventually.propertyVal(User.order('id').first, 'name', 'John');
+    });
+
+    it('orders by name', function () {
+      return assert.eventually.propertyVal(User.order('name').first, 'name', 'George');
+    });
+
+    it('orders by name desc', function () {
+      return assert.eventually.propertyVal(User.order('name desc').first, 'name', 'Ringo');
+    });
+  });
 });
 
-function makeTwoRecords () {
-  return new User({ name: 'Jon' }).save().then(function () {
-    return new User({ name: 'Zivi' }).save();
-  });
+function makeRecords () {
+  return Promise.all(['John', 'Paul', 'George', 'Ringo'].map(function (name) {
+    return new User({ name }).save();
+  }));
 }
