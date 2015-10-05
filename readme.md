@@ -55,7 +55,7 @@ The above will look to the database for a `users` table, and add setters and get
 
 What can you do with a model? You can use it to find records from the table is represents.
 
-### Querying (not yet implemented)
+### Querying
 
 #### .find(id:string|number):Record
 
@@ -84,5 +84,25 @@ query.toString(); // "select * from users where confirmed = true;"
 // Only once .then is called on a relation is the db hit
 query.then(function (users) {
   return user.email;
+});
+```
+
+#### .all:Array[Record]
+
+Executes the current relation by turning it into a query, returning a promise to an array of records.
+
+Note: Instead of using `.all` you can also use `.then()`. 
+
+```javascript
+User.order('created_at').limit(10).all.then(function (users) {
+  users.forEach(function (user) {
+    console.log(user.name);
+  });
+});
+
+// or
+
+User.order('created_at').limit(10).then(function (users) {
+  …
 });
 ```

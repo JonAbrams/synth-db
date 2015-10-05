@@ -1,6 +1,5 @@
 'use strict'
 
-let assert = require('assert');
 let Base = require('../lib/base');
 let testdb = require('./testdb');
 let knex = testdb.knex;
