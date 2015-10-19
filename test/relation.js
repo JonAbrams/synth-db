@@ -1,17 +1,15 @@
-'use strict'
+'use strict';
 
-let Base = require('../lib/base');
-let Relation = require('../lib/base');
 let testdb = require('./testdb');
-let knex = testdb.knex;
-
-Base = knex;
+let Base = require('../lib/base');
+let knex = Base.knex = testdb.knex;
+let Relation = require('../lib/relation');
 
 let User = null;
 
 beforeEach(function () {
    User = class User extends Relation {}
-  return testdb.refresh().then(() => User.init());
+  return testdb.refresh();
 });
 
 describe('Relation', function () {
@@ -71,7 +69,10 @@ describe('Relation', function () {
 });
 
 function makeRecords () {
-  return Promise.all(['John', 'Paul', 'George', 'Ringo'].map(function (name) {
-    return new User({ name }).save();
-  }));
+  let names = ['John', 'Paul', 'George', 'Ringo']
+
+  return (function addUser () {
+    if (names.length === 0) return;
+    return knex.table('users').insert({ name: names.shift() }).then(addUser);
+  })();
 }

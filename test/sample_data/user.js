@@ -1,5 +1,7 @@
+'use strict';
+
 var sdb = require('../../index');
 
-class User extends sdb.Base {
+module.exports = class User extends sdb.Base {
 
-}
+};
