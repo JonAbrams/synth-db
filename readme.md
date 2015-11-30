@@ -12,7 +12,7 @@ Being developed readme first (tests second). There's still lots of missing imple
 
 ```
 npm install --save synth-db
-npm install --save knex      # needed too
+npm install --save knex pg      # needed too
 ```
 
 ## API
@@ -27,7 +27,7 @@ let sdb = require('synth-db');
 sdb.setKnex(knex);
 ```
 
-synth-db is a base class that you models will extend.
+synth-db is a base class that your models will extend.
 
 ### Declaring Models
 
@@ -91,7 +91,7 @@ query.then(function (users) {
 
 Executes the current relation by turning it into a query, returning a promise to an array of records.
 
-Note: Instead of using `.all` you can also use `.then()`. 
+Note: Instead of using `.all` you can also use `.then()`.
 
 ```javascript
 User.order('created_at').limit(10).all.then(function (users) {
