@@ -24,7 +24,6 @@ describe('relationships', function () {
       userId = user.id;
 
       return new Post({
-        user: user,
         subject:'test subj',
         message: 'the best post ever!'
       }).save();
@@ -32,34 +31,71 @@ describe('relationships', function () {
   });
 
   describe('belongsTo', function () {
-    it('throws when wrong trype', function () {
-      assert.throws(() => {
-        this.post.user = {};
-      }, /Must be an instance of/);
+    describe('assignment', function () {
+      beforeEach(function () {
+        return this.post.user = this.user;
+      });
+
+      it('throws when wrong trype', function () {
+        assert.throws(() => {
+          this.post.user = {};
+        }, /Must be an instance of/);
+      });
+
+      it('returns proper class instance', function () {
+        return this.post.user.then(user =>
+          assert.equal(user.constructor.name, 'User')
+        );
+      });
+
+      it('returns user with expected name', function () {
+        return this.post.user.then(user =>
+          assert.equal(user.name, 'Jon')
+        );
+      });
+
+      it('returns user id', function () {
+        assert.equal(this.post.user_id, userId);
+      });
     });
 
-    it('returns proper class instance', function () {
-      assert.equal(this.post.user.constructor.name, 'User');
-    });
+    it.only('returns record', function () {
+      this.post.user = this.user;
 
-    it('returns user with expected name', function () {
-      assert.equal(this.post.user.name, 'Jon');
-    });
-
-    it('returns user id', function () {
-      assert.equal(this.post.user_id, userId);
+      return this.post.save().then(function () {
+        return Post.first;
+      }).then(post => {
+        debugger;
+        return post.user;
+      }).then(user => {
+        assert.deepEqual(user.attributes, this.user.attributes);
+        assert.equal(user.constructor, User);
+      });
     });
   });
 
   describe('hasMany', function () {
-    it('assigns records', function () {
-      let newPost = new Post();
-      this.user.posts = [newPost];
-      assert.deepEqual(this.user.posts, [newPost]);
+    describe('assigns records', function () {
+      beforeEach(function () {
+        this.newPost = new Post();
+        return this.user.posts = [this.newPost];
+      });
+
+      it('is available', function () {
+        return this.user.posts.then(posts =>
+          assert.deepEqual(posts, [this.newPost])
+        );
+      })
     });
 
-    it.skip('returns records', function () {
-      assert.deepEqual(this.user.posts, [this.post]);
+    it('returns records', function () {
+      this.post.user = this.user;
+
+      return this.post.save().then(function () {
+        return this.user.posts;
+      }).then(posts =>
+        assert.deepEqual(posts, [this.post])
+      );
     });
   });
 });
