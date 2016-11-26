@@ -8,7 +8,7 @@ let Relation = require('../lib/relation');
 let User = null;
 
 beforeEach(function () {
-   User = class User extends Relation {}
+  User = class User extends Relation {};
   return testdb.refresh();
 });
 
