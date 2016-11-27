@@ -7,7 +7,14 @@ let knex = testdb.knex;
 Base.knex = knex;
 
 beforeEach(function () {
-  return testdb.refresh();
+  return testdb.refresh().then(() => {
+    let names = ['John', 'Paul', 'George', 'Ringo'];
+
+    return (function addUser () {
+      if (names.length === 0) return;
+      return knex.table('users').insert({ name: names.shift() }).then(addUser);
+    })();
+  });
 });
 
 describe('init', function () {
@@ -19,19 +26,26 @@ describe('init', function () {
 });
 
 describe('Base', function () {
-  let User;
+  let User = class User extends Base {};
   beforeEach(function () {
-    User = class User extends Base {};
+    return User.init();
   });
 
   describe('.resetColumnInformation', function () {
     it('populates attributes', function () {
-      assert.equal(User.attributes, null);
       return User.resetColumnInformation().then(function () {
         assert.deepEqual(
           Object.keys(User.attributes).sort,
           ['id', 'name', 'created_at', 'updated_at'].sort
         );
+      });
+    });
+  });
+
+  describe('.all', function () {
+    it('returns all 4 users', function () {
+      return User.all.then(users => {
+        assert.equal(users.length, 4);
       });
     });
   });
