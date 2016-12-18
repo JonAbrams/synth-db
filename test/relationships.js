@@ -86,11 +86,13 @@ describe('relationships', function () {
         return this.user.posts = [this.newPost];
       });
 
-      it('is available', function () {
-        return this.user.posts.then(posts =>
-          assert.deepEqual(posts, [this.newPost])
-        );
-      })
+      it('is immediately available', function () {
+        assert.deepEqual(this.user.relations.posts, [this.newPost]);
+      });
+
+      it('stores child records', function () {
+        assert.equal(this.newPost.attributes.user_id, this.user.id);
+      });
     });
 
     it('returns records', function () {
