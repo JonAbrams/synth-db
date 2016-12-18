@@ -57,6 +57,12 @@ describe('relationships', function () {
       it('returns user id', function () {
         assert.equal(this.post.user_id, userId);
       });
+
+      it('saves foreign_id as attribute', function () {
+        return this.post.save().then(post => {
+          assert.notEqual(post.attributes['user_id'], null);
+        });
+      });
     });
 
     it('returns record', function () {
@@ -87,13 +93,13 @@ describe('relationships', function () {
       })
     });
 
-    it.skip('returns records', function () {
+    it('returns records', function () {
       this.post.user = this.user;
 
-      return this.post.save().then(function () {
+      return this.post.save().then(() => {
         return this.user.posts;
       }).then(posts =>
-        assert.deepEqual(posts, [this.post])
+        assert.deepEqual(posts[0].attributes, this.post.attributes)
       );
     });
   });
