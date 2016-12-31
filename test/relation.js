@@ -52,6 +52,24 @@ describe('Relation', function () {
         });
       });
     });
+
+    describe('find', function () {
+      describe('using id', function () {
+        it('finds the record', function () {
+          return User.find(2).then(user => {
+            assert.equal(user.name, 'Paul');
+          });
+        });
+      });
+
+      describe('using args', function () {
+        it('finds the record', function () {
+          return User.find({ name: 'Paul' }).then(user => {
+            assert.equal(user.id, 2);
+          });
+        });
+      });
+    });
   });
 
   describe('#order', function () {
