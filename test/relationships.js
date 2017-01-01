@@ -5,6 +5,7 @@ let testdb = require('./testdb');
 let knex = testdb.knex;
 let Post = require('./sample_data/post');
 let User = require('./sample_data/user');
+let Profile = require('./sample_data/profile');
 
 Base.knex = knex;
 
@@ -15,6 +16,14 @@ describe('relationships', function () {
       return User.init();
     }).then(function () {
       return Post.init();
+    }).then(function () {
+      return Profile.init();
+    }).then(function () {
+      return new Profile({
+        age: 18
+      }).save();
+    }).then(profile => {
+      this.profile = profile;
     }).then(function () {
       return new User({
         name: "Jon"
@@ -79,6 +88,35 @@ describe('relationships', function () {
     });
   });
 
+  describe('hasOne', function () {
+    describe('assigns record', function () {
+      beforeEach(function () {
+        this.user.profile = this.profile;
+        return this.user.save();
+      });
+
+      it('is immediately available (cached)', function () {
+        assert.equal(this.user.relations.profile, this.profile);
+      });
+
+      it('stores child records', function () {
+        Profile.find({ age: 18 }).then(profile => {
+          assert.equal(profile.user_id, this.user.id);
+        });
+      });
+    });
+
+    it('returns records', function () {
+      this.user.profile = this.profile;
+
+      return this.user.save().then(() => {
+        return this.user.profile;
+      }).then(profile =>
+        assert.deepEqual(profile.attributes, this.profile.attributes)
+      );
+    });
+  });
+
   describe('hasMany', function () {
     describe('assigns records', function () {
       beforeEach(function () {
@@ -86,7 +124,7 @@ describe('relationships', function () {
         return this.user.posts = [this.newPost];
       });
 
-      it('is immediately available', function () {
+      it('is immediately available (cached)', function () {
         assert.deepEqual(this.user.relations.posts, [this.newPost]);
       });
 

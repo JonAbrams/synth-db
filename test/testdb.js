@@ -20,5 +20,13 @@ exports.refresh = function () {
       table.integer('user_id');
       table.timestamps();
     });
-  })
+  }).then(function () {
+    return knex.schema.dropTableIfExists('profiles');
+  }).then(function () {
+    return knex.schema.createTable('profiles', function (table) {
+      table.increments();
+      table.integer('age');
+      table.integer('user_id');
+    });
+  });
 };
